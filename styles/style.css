@@ -1,0 +1,705 @@
+/* Avoid flashbanging users*/
+html {
+  background-color: black;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body.is-fullscreen {
+  background-color: var(--color-dark-bg);
+  height: 100vh;
+  /* Ensure the body takes the full height of the viewport in fullscreen */
+  overflow: hidden;
+  /* Prevent any unwanted scrolling */
+}
+
+:root {
+  --anim_dur: 300ms;
+  --color-bg: #EFEFEF;
+  --color-surface: rgba(255, 255, 255, 0.75);
+  --color-header-bg: var(--color-surface);
+  --color-text: #000000;
+  --color-text-inverse: #fff;
+  --color-border: rgba(0, 0, 0, 0.6);
+  --color-border-inverse: rgba(255, 255, 255, 0.4);
+  --color-link-hover: hotpink;
+  --color-link-active: blue;
+  --color-language-text: rgba(2, 0, 36, 1);
+
+  --color-dark-bg: rgb(0, 0, 0);
+  --color-dark-header-bg: rgba(0, 0, 0, 0.95);
+  --color-dark-surface: rgba(34, 34, 34, 0.6);
+
+  --color-header-control-bg: var(--color-text-inverse);
+  --color-header-control-text: var(--color-language-text);
+  --color-header-control-hover-bg: var(--color-dark-bg);
+  --color-header-control-hover-text: var(--color-text-inverse);
+  --icon-filter: none;
+  --border-radius-light: 10px;
+  --header-control-height: 36px;
+
+  --header-height: 90px;
+}
+
+.icon_small {
+  border-radius: 3px;
+  height: 20px;
+}
+
+.icon_big {
+  display: block;
+  width: 52px;
+  height: 52px;
+  padding: 8px;
+  background: var(--color-dark-bg);
+  border-radius: var(--border-radius-light);
+  object-fit: contain;
+  flex: 0 0 auto;
+}
+
+.icon_spacer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 14px;
+  width: fit-content;
+  max-width: 100%;
+  padding: 12px;
+  margin-top: 1em;
+}
+
+
+body,
+.general_container,
+header {
+  transition: background-color var(--anim_dur) ease, color var(--anim_dur) ease, border-color var(--anim_dur);
+}
+
+body {
+  font-family: 'Ubuntu';
+  font-size: 16px;
+  background-color: transparent;
+  padding-top: 0;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: -12px;
+  background-image: url("../sources/photos/bg.jpg");
+  filter: blur(6px);
+  z-index: -1;
+}
+
+main {
+  margin-top: 10px;
+}
+
+.general_container {
+  color: var(--color-text);
+  background-color: var(--color-surface);
+  padding: 20px 15px;
+  margin-bottom: 1em;
+  border-radius: var(--border-radius-light);
+  max-width: 1200px;
+  width: 99%;
+  margin-left: auto;
+  /* Center the container */
+  margin-right: auto;
+  border: 2px solid var(--color-border);
+}
+
+/* Links */
+/* jump links*/
+.anchor {
+  padding-top: 150px;
+  margin-top: -150px;
+}
+
+/* unvisited link */
+a:link,
+a:visited {
+  color: var(--color-text);
+}
+
+a:hover {
+  color: var(--color-text-inverse);
+}
+
+a:active {
+  color: var(--color-text-inverse);
+}
+
+
+/****************************/
+/*         HEADER           */
+/*        SETTINGS          */
+/****************************/
+body.is-fullscreen header {
+  display: none;
+}
+
+/* header {
+  color: var(--color-text-inverse);
+  position: sticky;
+  margin: 0;
+  width: 100%;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 10000;
+
+  height: var(--header-height);
+  padding: 0 3%;
+
+  border-bottom: 2px solid var(--color-border);
+  backdrop-filter: blur(10px);
+} */
+
+header {
+  display: grid;
+  /* Change this line: both sides now take 1fr of equal space */
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  height: var(--header-height);
+  padding: 0 3%;
+  width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 10000;
+  border-bottom: 2px solid var(--color-border);
+  background-color: var(--color-header-bg);
+  backdrop-filter: blur(10px);
+}
+
+header .logo {
+  justify-self: start;
+  color: var(--color-text);
+  font-weight: 700;
+  text-decoration: none;
+  font-size: 1.8rem;
+  letter-spacing: 1px;
+}
+
+header nav {
+  justify-self: center;
+}
+
+.header-controls {
+  justify-self: end;
+  display: flex;
+  gap: 10px;
+}
+
+header>* {
+  min-width: 0;
+}
+
+header nav ul {
+  display: flex;
+  gap: 10px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+header ul li a {
+  border-radius: var(--border-radius-light);
+  min-height: var(--header-control-height);
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  color: var(--color-text-inverse);
+  padding: 6px 10px;
+  font-size: 1.2rem;
+}
+
+header ul li a:hover,
+header ul li a.active {
+  background-color: var(--color-header-control-hover-bg);
+  color: var(--color-header-control-hover-text);
+}
+
+/****************************/
+/*     LANGUAGE BUTTON      */
+/*        SETTINGS          */
+/****************************/
+#language-switch {
+  background-color: var(--color-header-control-bg);
+  color: var(--color-header-control-text);
+  border: none;
+  border-radius: var(--border-radius-light);
+  padding: 6px 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#language-switch:hover {
+  background-color: var(--color-header-control-hover-bg);
+  color: var(--color-header-control-hover-text);
+}
+
+/****************************/
+/*        DARKMODE          */
+/*        SETTINGS          */
+/****************************/
+#darkmode-switch[aria-pressed="false"] {
+  --darkmode-switch-icon: url('../sources/icons&bgs/sun.svg');
+}
+
+#darkmode-switch[aria-pressed="true"] {
+  --darkmode-switch-icon: url('../sources/icons&bgs/moon.svg');
+}
+
+#darkmode-switch {
+  width: var(--header-control-height);
+  height: var(--header-control-height);
+  background-color: var(--color-header-control-bg);
+  border: none;
+  border-radius: var(--border-radius-light);
+  cursor: pointer;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#darkmode-switch:hover {
+  background-color: var(--color-header-control-hover-bg);
+  color: var(--color-header-control-hover-text);
+}
+
+#darkmode-switch::before {
+  content: "";
+  width: 50%;
+  aspect-ratio: 1;
+  background-color: var(--color-header-control-text);
+  mask: var(--darkmode-switch-icon) center / contain no-repeat;
+  -webkit-mask: var(--darkmode-switch-icon) center / contain no-repeat;
+}
+
+#darkmode-switch:hover::before {
+  background-color: var(--color-header-control-hover-text);
+}
+
+/* COLORS darkmode */
+body.darkmode {
+  --color-bg: var(--color-dark-bg);
+  --color-surface: var(--color-dark-surface);
+  --color-header-bg: var(--color-dark-surface);
+  --color-text: var(--color-text-inverse);
+  --color-border: var(--color-border-inverse);
+  --color-link-hover: var(--color-text-inverse);
+  --color-link-active: var(--color-text-inverse);
+  --color-header-control-bg: var(--color-dark-bg);
+  --color-header-control-text: var(--color-text-inverse);
+  --color-header-control-hover-bg: var(--color-text-inverse);
+  --color-header-control-hover-text: var(--color-dark-bg);
+}
+
+/****************************/
+/*          FONT            */
+/*        SETTINGS          */
+/****************************/
+h2 {
+  margin-bottom: 0.5em;
+  text-align: left;
+  font-size: 25px;
+}
+
+h3 {
+  font-size: 21px;
+  margin-top: -0.25em;
+}
+
+p {
+  text-align: left;
+  font-size: 18px;
+  /* default size */
+}
+
+.icon_big,
+.icon_small {
+  filter: var(--icon-filter);
+}
+
+/****************************/
+/*        FLEXBOX           */
+/*        SETTINGS          */
+/****************************/
+.app_flex {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: justify;
+}
+
+#price_flex {
+  display: flex;
+  justify-content: left;
+}
+
+.price_tag {
+  align-items: center;
+  border-radius: var(--border-radius-light);
+  margin: 10px;
+  background: var(--color-bg);
+  padding: 15px;
+}
+
+.price_amm {
+  font-size: 30px;
+}
+
+
+/****************************/
+/*         HOVER            */
+/*      ANIMATIONS          */
+/****************************/
+header ul li a:hover {
+  transform: translateY(-4px) scale(1.02);
+}
+
+header ul li a {
+  transition: transform 150ms ease, background-color 150ms ease;
+}
+
+.price_tag:hover,
+#darkmode-switch:hover,
+#language-switch:hover,
+.icon_big:hover {
+  transform: translateY(-4px) scale(1.02);
+}
+
+.price_tag,
+#darkmode-switch,
+#language-switch,
+.icon_big {
+  transition: transform 200ms ease;
+}
+
+/****************************/
+/*         FOOTER           */
+/*        SETTINGS          */
+/****************************/
+
+footer p {
+  text-align: center;
+  margin: 0;
+  padding: 8px 0;
+}
+
+#foot_flex {
+  display: flex;
+  align-items: stretch;
+  align-items: flex-start;
+  justify-content: space-around;
+  /* Distribute space between the columns */
+  gap: 16px;
+  padding: 5px;
+}
+
+.left_column {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 45%;
+  height: auto;
+}
+
+.contactAgps {
+  border-radius: var(--border-radius-light);
+  background-color: var(--color-bg);
+  padding: 2%;
+  margin-bottom: 1vh;
+  height: auto;
+  min-height: 0;
+}
+
+/*contactAgps is the left_column, the right column would be google iframe*/
+#copyright {
+  color: white;
+}
+
+.site-credit {
+  color: white;
+  font-size: 0.8rem;
+  opacity: 0.6;
+}
+.site-credit a {
+  color: white 
+}
+
+/****************************/
+/*       GOOGLE MAPS        */
+/*        SETTINGS          */
+/****************************/
+
+.googlemap-responsive {
+  width: 50%;
+  overflow: hidden;
+  position: relative;
+  height: auto;
+  /* Let the height grow with content */
+}
+
+.googlemap-responsive iframe {
+  border-radius: var(--border-radius-light);
+  height: calc(100% - 5px);
+  /* Adjust height to leave room for controls */
+  width: 100%;
+}
+
+/****************************/
+/*    FLICKITY CAROUSEL     */
+/*        SETTINGS          */
+/****************************/
+* {
+  box-sizing: border-box;
+}
+
+.carousel {
+  background: transparent;
+  align-items: center;
+  /* doesn't work */
+  margin-bottom: 1em;
+}
+
+.carousel-cell {
+  width: 33.3%;
+  background: transparent;
+  padding-left: 2.5px;
+  padding-right: 5px;
+}
+
+.carousel-cell-image {
+  width: 100%;
+  /* Make the image take up full width of the cell */
+  height: auto;
+  /* Keep the aspect ratio of the images */
+  max-height: 360px;
+  /* Limit the height */
+  object-fit: cover;
+  /* Ensures that the image scales properly without distortion */
+  display: block;
+  margin: 0 auto;
+  /* Center the image horizontally */
+}
+
+.carousel.is-fullscreen .carousel-cell {
+  width: 100%;
+  /* Full width */
+  height: 100vh;
+  /* Full height of the viewport */
+  padding: 0;
+  /* Remove padding */
+
+  display: flex;
+  justify-content: center;
+  /* Center horizontally */
+  align-items: center;
+  /* Center vertically */
+}
+
+.carousel.is-fullscreen .carousel-cell-image {
+  max-width: 100%;
+  /* Don't exceed the width of the viewport */
+  max-height: 90vh;
+  /* Don't exceed the height of the viewport */
+  object-fit: contain;
+  /* Ensure the entire image is visible without cropping */
+  display: block;
+  margin: 0 auto;
+}
+
+.carousel.is-fullscreen .flickity-prev-next-button {
+  width: 50px;
+  height: 50px;
+  top: 60%;
+}
+
+
+/**************************************************/
+/*               RESPONSIVE LAYOUTS               */
+/**************************************************/
+
+/* Tablet & Small Screens (Up to 900px) */
+@media (max-width: 900px) {
+  header {
+    display: flex;
+    /* Converts grid to flex for cleaner wrapping */
+    flex-wrap: wrap;
+    justify-content: space-between;
+    height: auto;
+    padding: 15px 3%;
+    gap: 15px;
+  }
+
+  header .logo {
+    order: 1;
+    justify-self: start;
+  }
+
+  .header-controls {
+    order: 2;
+    justify-self: end;
+  }
+
+  header nav {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+    display: flex;
+  }
+
+  header nav ul {
+    justify-content: center;
+    width: 100%;
+  }
+}
+
+/* Mobile Screens (Up to 700px) */
+@media (max-width: 700px) {
+  body {
+    margin-top: 0;
+    margin-bottom: 1em;
+    padding: 0;
+  }
+
+  main {
+    margin-top: 2em;
+  }
+
+  header {
+    flex-direction: column;
+    /* Centered column stack for tight spaces */
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  header .logo {
+    font-size: 1.5em;
+    margin-bottom: 0;
+    text-align: center;
+  }
+
+  header ul {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+  }
+
+  header ul li {
+    padding: 0;
+    margin: 0;
+  }
+
+  header ul li a {
+    font-size: 0.95em;
+    padding: 6px 10px;
+  }
+
+  .anchor {
+    padding-top: 220px;
+    margin-top: -220px;
+  }
+    .app_flex {
+      justify-content: flex-start;
+      /* Prevents stretching elements apart */
+      gap: 8px;
+      /* Gives you tight, uniform spacing between elements */
+      padding: 5px 0;
+    }
+  #price_flex {
+    flex-direction: column;
+  }
+
+  /* Footer Layout Mobile */
+  footer {
+    margin-top: -0.5em;
+    text-align: center;
+    width: 100%;
+    position: static;
+  }
+
+  #foot_flex {
+    flex-direction: column;
+    padding: 2px;
+  }
+
+  .left_column {
+    width: 100%;
+    height: auto;
+  }
+
+  /* Google Maps Mobile */
+  .googlemap-responsive {
+    width: 100%;
+    margin-top: 1em;
+    left: 0;
+    margin-bottom: 0;
+    padding-bottom: 0;
+    aspect-ratio: 4 / 3;
+    /* Gives the map a fallback proportional height */
+  }
+
+  /* Flickity Carousel Mobile */
+  .carousel {
+    width: 100%;
+    margin-bottom: 0.8em;
+      /* A tight, consistent gap for both sections */
+      clear: both;
+  }
+
+  .carousel-cell {
+    width: 100%;
+    height: 245px;
+  }
+
+  .carousel-cell-image {
+    max-height: 120vh;
+    object-fit: cover;
+  }
+
+  .carousel.is-fullscreen .carousel-cell {
+    height: auto;
+    margin-top: 60%;
+  }
+
+  .carousel.is-fullscreen .carousel-cell-image {
+    max-width: 100%;
+    max-height: 75vh;
+  }
+
+  .carousel.is-fullscreen .flickity-prev-next-button {
+    width: 50px;
+    height: 50px;
+    top: 60%;
+  }
+}
+
+/* Mobile Landscape Settings */
+@media only screen and (max-height: 500px) and (orientation: landscape) {
+  header {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 9999;
+  }
+
+  main {
+    margin-top: 35vh;
+  }
+}
